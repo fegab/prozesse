@@ -14,7 +14,7 @@ public class Main_prozesse_HA1 {
 	public static void main(String[] args) {
 
 		Map<UUID, Element> elemente = new HashMap<>();
-		// Menge a = new Menge(UUID.randomUUID(), elemente);
+		//Menge a = new Menge(UUID.randomUUID(), elemente, "test");
 		int helfer = 0;
 
 		for (int i = 0; i < 10; i++) {
