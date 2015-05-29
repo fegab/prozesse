@@ -7,14 +7,12 @@ import java.util.UUID;
 public class Element {
 
 	private UUID id;
-	private final String name;
 	private Sense sense;
 
 	private Set<Relation> relations = new HashSet<>();
 
-	public Element(UUID id, String name, Sense sense) {
+	public Element(UUID id, Sense sense) {
 		this.id = id;
-		this.name = name;
 		this.sense = sense;
 
 	}
@@ -41,10 +39,6 @@ public class Element {
 
 	public void setSense(Sense sense) {
 		this.sense = sense;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 }

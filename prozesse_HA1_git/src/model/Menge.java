@@ -8,10 +8,13 @@ public class Menge {
 
 	private UUID idMenge;
 	private Map<UUID, Element> elemente = new HashMap<>();
+	private Sense sense;
+	
 
-	public Menge(UUID idMenge, Map<UUID, Element> elemente) {
+	public Menge(UUID idMenge, Map<UUID, Element> elemente, Sense sense) {
 		this.idMenge = idMenge;
 		this.elemente = elemente;
+		this.setSense(sense);
 
 	}
 
@@ -29,6 +32,14 @@ public class Menge {
 
 	public void setElemente(Map<UUID, Element> elemente) {
 		this.elemente = elemente;
+	}
+
+	public Sense getSense() {
+		return sense;
+	}
+
+	public void setSense(Sense sense) {
+		this.sense = sense;
 	}
 
 }

@@ -14,12 +14,13 @@ public class Main_prozesse_HA1 {
 	public static void main(String[] args) {
 
 		Map<UUID, Element> elemente = new HashMap<>();
-		Menge a = new Menge(UUID.randomUUID(), elemente);
+		// Menge a = new Menge(UUID.randomUUID(), elemente);
 		int helfer = 0;
 
 		for (int i = 0; i < 10; i++) {
-			Element newele = new Element(UUID.randomUUID(), "element" + i, null);
-			elemente.put(newele.getId(), newele);
+			// Element newele = new Element(UUID.randomUUID(), "element" + i,
+			// null);
+			// elemente.put(newele.getId(), newele);
 			// System.out.println(elemente.size());
 			// System.out.println(newele.getId());
 		}
@@ -34,8 +35,8 @@ public class Main_prozesse_HA1 {
 		// .println("Anzahl der Elemente:(mit .size) " + elemente.size());
 
 		// neuer test
-		System.out.println("Mengen-ID: " + a.getIdMenge());
-		System.out.println("Anzahl der Elemente: " + a.getElemente().size());
+		// System.out.println("Mengen-ID: " + a.getIdMenge());
+		// System.out.println("Anzahl der Elemente: " + a.getElemente().size());
 
 	}
 
