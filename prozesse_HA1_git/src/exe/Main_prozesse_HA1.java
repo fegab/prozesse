@@ -1,6 +1,9 @@
 package exe;
 
 import java.awt.EventQueue;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import model.Element;
 import model.Menge;
@@ -10,27 +13,29 @@ public class Main_prozesse_HA1 {
 
 	public static void main(String[] args) {
 
-		Menge testMenge = new Menge(null, null);
-
-		Element in1 = new Element(null, "in", null);
-		Element out1 = new Element(null, "out", null);
-		in1.setname("in1");
-		out1.setname("out1");
+		Map<UUID, Element> elemente = new HashMap<>();
+		Menge a = new Menge(UUID.randomUUID(), elemente);
+		int helfer = 0;
 
 		for (int i = 0; i < 10; i++) {
-
-			Sense testSense = new Sense("iSense=" + i);
-			Element test = new Element(null, "i=" + i, testSense);
-			test.setname("i=" + i);
-
-			System.out.print("name: " + test.getname() + " Bedeutung: "
-					+ test.getSense().getSense());
-			System.out.println(" ");
-			// System.out.println(test);
-			// System.out.println(test.getname());
-			// System.out.println(test.getSense().getSense());
-
+			Element newele = new Element(UUID.randomUUID(), "element" + i, null);
+			elemente.put(newele.getId(), newele);
+			// System.out.println(elemente.size());
+			// System.out.println(newele.getId());
 		}
+
+		for (UUID id : elemente.keySet()) {
+			Element e = elemente.get(id);
+			System.out.println(e.getId());
+			helfer += 1;
+		}
+		// System.out.println("Anzahl der Elemente:(mit helfer) " + helfer);
+		// System.out
+		// .println("Anzahl der Elemente:(mit .size) " + elemente.size());
+
+		// neuer test
+		System.out.println("Mengen-ID: " + a.getIdMenge());
+		System.out.println("Anzahl der Elemente: " + a.getElemente().size());
 
 	}
 

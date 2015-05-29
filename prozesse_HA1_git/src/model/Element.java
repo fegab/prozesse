@@ -10,8 +10,7 @@ public class Element implements IElement {
 	public final String name;
 	public Sense sense;
 
-	// private Set<Relation> outgoingRelation = new HashSet<>();
-	// private Set<Relation> incomingRelation = new HashSet<>();
+	private Set<Relation> relations = new HashSet<>();
 
 	public Element(UUID id, String name, Sense sense) {
 		this.id = id;
