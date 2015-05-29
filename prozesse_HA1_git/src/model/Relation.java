@@ -1,7 +1,5 @@
 package model;
 
-import java.util.HashSet;
-import java.util.Set;
 
 public class Relation {
 
@@ -15,5 +13,13 @@ public class Relation {
 		this.startElement = startElement;
 		this.endElement = endElement;
 
+	}
+
+	public Sense getSense() {
+		return sense;
+	}
+
+	public void setSense(Sense sense) {
+		this.sense = sense;
 	}
 }

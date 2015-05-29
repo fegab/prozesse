@@ -11,10 +11,14 @@ public class Element {
 
 	private Set<Relation> relations = new HashSet<>();
 
+	public Element(Sense sense) {
+		this.id = UUID.randomUUID();
+		this.sense = sense;
+	}
+	
 	public Element(UUID id, Sense sense) {
 		this.id = id;
 		this.sense = sense;
-
 	}
 
 	public Set<Relation> getRelations() {

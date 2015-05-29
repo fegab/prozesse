@@ -10,6 +10,12 @@ public class Menge {
 	private Map<UUID, Element> elemente = new HashMap<>();
 	private Sense sense;
 	
+	
+	public Menge(Map<UUID, Element> elemente, Sense sense) {
+		this.idMenge = UUID.randomUUID();
+		this.elemente = elemente;
+		this.setSense(sense);
+	}
 
 	public Menge(UUID idMenge, Map<UUID, Element> elemente, Sense sense) {
 		this.idMenge = idMenge;
