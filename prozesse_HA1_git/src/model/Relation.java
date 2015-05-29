@@ -10,9 +10,6 @@ public class Relation {
 
 	public Sense sense;
 
-	private Set<Relation> startElements = new HashSet<>();
-	private Set<Relation> endElements = new HashSet<>();
-
 	public Relation(Sense sense, Element startElement, Element endElement) {
 		this.sense = sense;
 		this.startElement = startElement;

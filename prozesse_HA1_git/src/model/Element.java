@@ -4,11 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class Element implements IElement {
+public class Element {
 
 	private UUID id;
-	public final String name;
-	public Sense sense;
+	private final String name;
+	private Sense sense;
 
 	private Set<Relation> relations = new HashSet<>();
 
@@ -19,40 +19,32 @@ public class Element implements IElement {
 
 	}
 
-	@Override
+	public Set<Relation> getRelations() {
+		return relations;
+	}
+
+	public void setRelations(Set<Relation> relations) {
+		this.relations = relations;
+	}
+
 	public UUID getId() {
-		// TODO Auto-generated method stub
 		return id;
 	}
 
-	@Override
 	public void setId(UUID id) {
-		// TODO Auto-generated method stub
-
+		this.id = id;
 	}
 
-	@Override
-	public String getname() {
-		// TODO Auto-generated method stub
-		return name;
-	}
-
-	@Override
-	public void setname(String name) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public Sense getSense() {
-		// TODO Auto-generated method stub
 		return sense;
 	}
 
-	@Override
-	public void setSense() {
-		// TODO Auto-generated method stub
+	public void setSense(Sense sense) {
+		this.sense = sense;
+	}
 
+	public String getName() {
+		return name;
 	}
 
 }
