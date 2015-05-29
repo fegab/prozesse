@@ -22,4 +22,20 @@ public class Relation {
 	public void setSense(Sense sense) {
 		this.sense = sense;
 	}
+
+	public Element getStartElement() {
+		return startElement;
+	}
+
+	public void setStartElement(Element startElement) {
+		this.startElement = startElement;
+	}
+
+	public Element getEndElement() {
+		return endElement;
+	}
+
+	public void setEndElement(Element endElement) {
+		this.endElement = endElement;
+	}
 }

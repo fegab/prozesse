@@ -17,6 +17,7 @@ import javax.swing.tree.TreeSelectionModel;
 import model.Element;
 import model.Menge;
 import model.Relation;
+import model.Sense;
 
 public class GUI2 implements ActionListener {
 	
@@ -29,28 +30,12 @@ public class GUI2 implements ActionListener {
 	
 	private DefaultMutableTreeNode root = new DefaultMutableTreeNode("Mengen");
 	
-	private DefaultMutableTreeNode tools = new DefaultMutableTreeNode("Werkzeuge");
-	private DefaultMutableTreeNode fruits = new DefaultMutableTreeNode("Früchte");
-	
-	private DefaultMutableTreeNode tool0 = new DefaultMutableTreeNode("Schraubenzieher");
-	
-	private DefaultMutableTreeNode fruit0 = new DefaultMutableTreeNode("Birne");
-	private DefaultMutableTreeNode fruit1 = new DefaultMutableTreeNode("Apfel");
-	
 	private DefaultTreeModel treeModel = new DefaultTreeModel(root);
 	
 	
 	public GUI2(Collection<Menge> mengen) {
 
 		createTree(mengen);
-
-//		treeModel.insertNodeInto(tools, root, 0);
-//		treeModel.insertNodeInto(fruits, root, 0);
-//
-//		treeModel.insertNodeInto(tool0, tools, 0);
-//		
-//		treeModel.insertNodeInto(fruit0, fruits, 0);
-//		treeModel.insertNodeInto(fruit1, fruits, 0);
 		
 		
 		
@@ -78,9 +63,34 @@ public class GUI2 implements ActionListener {
 	public static void main(String[] args) {
 		ArrayList<Menge> mengen = new ArrayList<Menge>();
 		
-		//mengen.add(new Menge()
 		
 		
+		Element tool0 = new Element(new Sense("Schraubenzieher"));
+		Element tool1 = new Element(new Sense("Hammer"));
+		Element tool2 = new Element(new Sense("Dings"));
+		
+		Element fruit0 = new Element(new Sense("Birne"));
+		Element fruit1 = new Element(new Sense("Apfel"));
+		
+		//Relation rel0 = new Relation(new Sense("rel0"), tool0, tool1);
+		//Relation rel1 = new Relation(new Sense("rel1"), tool2, fruit0);
+		
+		tool0.addRelation(new Sense("rel0"), tool1);
+		fruit1.addRelation(new Sense("rel1"), tool2);
+		
+		Menge tools = new Menge(new Sense("Werkzeuge"));
+		tools.addElement(tool0);
+		tools.addElement(tool1);
+		tools.addElement(tool2);
+		
+		Menge fruits = new Menge(new Sense("Früchte"));
+		fruits.addElement(fruit0);
+		fruits.addElement(fruit1);
+		
+		
+		
+		mengen.add(tools);
+		mengen.add(fruits);
 		
 		new GUI2(mengen);		
 	}
@@ -118,7 +128,10 @@ public class GUI2 implements ActionListener {
 				treeModel.insertNodeInto(nodeElement, nodeMenge, 0);
 				
 				for (Relation relation : element.getRelations()) {
-					DefaultMutableTreeNode nodeRelation = new DefaultMutableTreeNode(relation.getSense().getName());
+					DefaultMutableTreeNode nodeRelation = new DefaultMutableTreeNode(
+							"name: " + relation.getSense().getName()
+							+ ", start: " + relation.getStartElement().getSense().getName()
+							+ ", end: " + relation.getEndElement().getSense().getName());
 					treeModel.insertNodeInto(nodeRelation, nodeElement, 0);
 				}
 			}
