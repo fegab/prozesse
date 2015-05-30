@@ -43,6 +43,6 @@ public class Relation {
 	
 	@Override
 	public String toString() {
-		return sense.getName();
+		return startElement.getSense().getName() + " <- " + sense.getName() + " -> " + endElement.getSense().getName();
 	}
 }

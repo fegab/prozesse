@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -21,14 +23,15 @@ import model.Menge;
 import model.Relation;
 import model.Sense;
 
-public class GUI2 implements ActionListener {
+public class GUI2 implements ActionListener, TreeSelectionListener {
 	
 	private JFrame frame = new JFrame("Prozesse");
 	
 	private JTree treeLeft = new JTree();
 	private JTree treeRight = new JTree();
 	
-	private JTextField textfield = new JTextField();
+	private JTextField textfieldLeft = new JTextField();
+	private JTextField textfieldRight = new JTextField();
 	
 	private JButton button = new JButton("Relation!");
 	
@@ -48,19 +51,25 @@ public class GUI2 implements ActionListener {
 
 		treeLeft.setModel(treeModel);
 		treeLeft.setBounds(10, 10, 200, 300);
+		treeLeft.addTreeSelectionListener(this);
 		
 		treeRight.setModel(treeModel);
 		treeRight.setBounds(220, 10, 200, 300);
+		treeRight.addTreeSelectionListener(this);
 		
-		textfield.setBounds(10, 320, 400, 25);
-		textfield.setEditable(false);
+		textfieldLeft.setBounds(10, 320, 200, 25);
+		textfieldLeft.setEditable(false);
+		
+		textfieldRight.setBounds(220, 320, 200, 25);
+		textfieldRight.setEditable(false);
 		
 		button.setBounds(10, 355, 100, 25);
 		button.addActionListener(this);
 		
 		frame.add(treeLeft);
 		frame.add(treeRight);
-		frame.add(textfield);
+		frame.add(textfieldLeft);
+		frame.add(textfieldRight);
 		frame.add(button);
 		
 		frame.setVisible(true);
@@ -108,10 +117,41 @@ public class GUI2 implements ActionListener {
 			TreePath leftPath = leftSelection.getSelectionPath();
 			TreePath rightPath = rightSelection.getSelectionPath();
 			
-			Object[] leftObjects = leftPath.getPath();
-			Object[] rightObjects = rightPath.getPath();
 			
-			System.out.println(leftObjects[leftObjects.length-1] + "    " + rightObjects[rightObjects.length-1]);
+			
+			
+			if (leftPath != null && rightPath != null) {
+			
+				Object[] leftObjects = leftPath.getPath();
+				Object[] rightObjects = rightPath.getPath();
+				
+				DefaultMutableTreeNode leftSel = (DefaultMutableTreeNode)leftObjects[leftObjects.length-1];
+				DefaultMutableTreeNode rightSel = (DefaultMutableTreeNode)rightObjects[rightObjects.length-1];
+				
+				
+				if (	leftSel.getUserObject() instanceof Element
+					 && rightSel.getUserObject() instanceof Element) {
+					
+					
+					Element leftElement = (Element)leftSel.getUserObject();
+					Element rightElement = (Element)rightSel.getUserObject();
+					
+					Relation relation = new Relation(new Sense("test"), leftElement, rightElement);
+					
+					DefaultMutableTreeNode nodeRelation0 = new DefaultMutableTreeNode(relation);
+					DefaultMutableTreeNode nodeRelation1 = new DefaultMutableTreeNode(relation);
+					
+					treeModel.insertNodeInto(nodeRelation0, leftSel, 0);
+					treeModel.insertNodeInto(nodeRelation1, rightSel, 0);
+					
+					//treeModel.reload();
+					treeModel.nodeChanged(leftSel);
+					treeModel.nodeChanged(rightSel);
+					
+					System.out.println("relation added: " + relation.toString());
+				}
+				
+			}
 		}
 		
 	}
@@ -137,6 +177,20 @@ public class GUI2 implements ActionListener {
 			}
 		}
 		
+	}
+
+	@Override
+	public void valueChanged(TreeSelectionEvent e) {
+		
+		TreePath treePath = e.getPath();
+		Object[] path = treePath.getPath();
+		Object selection = path[path.length-1];
+		
+		if (e.getSource().equals(treeLeft)) {
+			textfieldLeft.setText(selection.toString());
+		} else if (e.getSource().equals(treeRight)) {
+			textfieldRight.setText(selection.toString());
+		}	
 	}
 	
 
