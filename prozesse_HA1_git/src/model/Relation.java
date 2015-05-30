@@ -40,4 +40,9 @@ public class Relation {
 	public void setEndElement(Element endElement) {
 		this.endElement = endElement;
 	}
+	
+	@Override
+	public String toString() {
+		return sense.getName();
+	}
 }

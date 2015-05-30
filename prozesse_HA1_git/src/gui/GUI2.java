@@ -8,6 +8,8 @@ import java.util.UUID;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -26,6 +28,8 @@ public class GUI2 implements ActionListener {
 	private JTree treeLeft = new JTree();
 	private JTree treeRight = new JTree();
 	
+	private JTextField textfield = new JTextField();
+	
 	private JButton button = new JButton("Relation!");
 	
 	private DefaultMutableTreeNode root = new DefaultMutableTreeNode("Mengen");
@@ -36,8 +40,6 @@ public class GUI2 implements ActionListener {
 	public GUI2(Collection<Menge> mengen) {
 
 		createTree(mengen);
-		
-		
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(100, 100, 500, 500);
@@ -50,11 +52,15 @@ public class GUI2 implements ActionListener {
 		treeRight.setModel(treeModel);
 		treeRight.setBounds(220, 10, 200, 300);
 		
-		button.setBounds(10, 320, 100, 25);
+		textfield.setBounds(10, 320, 400, 25);
+		textfield.setEditable(false);
+		
+		button.setBounds(10, 355, 100, 25);
 		button.addActionListener(this);
 		
 		frame.add(treeLeft);
 		frame.add(treeRight);
+		frame.add(textfield);
 		frame.add(button);
 		
 		frame.setVisible(true);
@@ -115,20 +121,17 @@ public class GUI2 implements ActionListener {
 	private void createTree(Collection<Menge> mengen) {
 		
 		for (Menge menge : mengen) {
-			DefaultMutableTreeNode nodeMenge = new DefaultMutableTreeNode(menge.getSense().getName());
+			DefaultMutableTreeNode nodeMenge = new DefaultMutableTreeNode(menge);
 			treeModel.insertNodeInto(nodeMenge, root, 0);
 			
 			for (UUID uuid : menge.getElemente().keySet()) {
 				Element element = menge.getElemente().get(uuid);
 				
-				DefaultMutableTreeNode nodeElement = new DefaultMutableTreeNode(element.getSense().getName());
+				DefaultMutableTreeNode nodeElement = new DefaultMutableTreeNode(element);
 				treeModel.insertNodeInto(nodeElement, nodeMenge, 0);
 				
 				for (Relation relation : element.getRelations()) {
-					DefaultMutableTreeNode nodeRelation = new DefaultMutableTreeNode(
-							"name: " + relation.getSense().getName()
-							+ ", start: " + relation.getStartElement().getSense().getName()
-							+ ", end: " + relation.getEndElement().getSense().getName());
+					DefaultMutableTreeNode nodeRelation = new DefaultMutableTreeNode(relation);
 					treeModel.insertNodeInto(nodeRelation, nodeElement, 0);
 				}
 			}

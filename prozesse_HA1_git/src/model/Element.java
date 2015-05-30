@@ -53,4 +53,9 @@ public class Element {
 		this.sense = sense;
 	}
 
+	
+	@Override
+	public String toString() {
+		return sense.getName();
+	}
 }

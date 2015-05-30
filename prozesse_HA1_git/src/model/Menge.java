@@ -57,5 +57,10 @@ public class Menge {
 	public void setSense(Sense sense) {
 		this.sense = sense;
 	}
+	
+	@Override
+	public String toString() {
+		return sense.getName();
+	}
 
 }
