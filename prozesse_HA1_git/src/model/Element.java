@@ -15,7 +15,7 @@ public class Element {
 		this.id = UUID.randomUUID();
 		this.sense = sense;
 	}
-	
+
 	public Element(UUID id, Sense sense) {
 		this.id = id;
 		this.sense = sense;
@@ -28,14 +28,14 @@ public class Element {
 	public void setRelations(Set<Relation> relations) {
 		this.relations = relations;
 	}
-	
-//	public void addRelation(Relation relation) {
-//		this.relations.add(relation);
-//	}
-//	
-//	public void addRelation(Sense sense, Element element) {
-//		this.relations.add(new Relation(sense, this, element));
-//	}
+
+	// public void addRelation(Relation relation) {
+	// this.relations.add(relation);
+	// }
+	//
+	// public void addRelation(Sense sense, Element element) {
+	// this.relations.add(new Relation(sense, this, element));
+	// }
 
 	public UUID getId() {
 		return id;
@@ -53,7 +53,6 @@ public class Element {
 		this.sense = sense;
 	}
 
-	
 	@Override
 	public String toString() {
 		return sense.getName();

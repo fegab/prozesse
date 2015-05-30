@@ -6,8 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
+import model.Element;
 import model.Menge;
+import model.Sense;
 
 public class Database {
 
@@ -44,26 +49,32 @@ public class Database {
 		conn.close();
 	}
 
-	  /**
-	   * Erstellt alle benötigten Tabellen in der Datenbank mit allen Spalten
-	   * 
-	   * @throws SQLException
-	   */
+	/**
+	 * Erstellt alle benötigten Tabellen in der Datenbank mit allen Spalten
+	 * 
+	 * @throws SQLException
+	 */
 	public void createTables() throws SQLException {
 		Statement statement = conn.createStatement();
 
 		// UUID wird als String (UUIDs haben immer 36 Zeichen) gespeichert
 
-		String strcreateTableMengen = "CREATE TABLE mengen(index INT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, elemente, sense);";
-		String strcreateTableElements = "CREATE TABLE elements(index INT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, MengenUUID VARCHAR(36),bedeutung,relations);";
-		String strcreateTableRelations = "CREATE TABLE relations(index INT PRIMARY KEY, uuid CARCHAR(36) NOT NULL);";
+		// Menge: UUID idMenge, Sense sense
+		// Elemente: UUID id, UUID idMenge, Sense sense
+		// Relationen: Sense sense, Element startElement, Element endElement
+		// String strcreateTableMengen =
+		// "CREATE TABLE mengen(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, sense);";
+		String strcreateTableElements = "CREATE TABLE elements(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, uuidMenge VARCHAR(36) NOT NULL,bedeutung VARCHAR(36) NOT NULL);";
+		// String strcreateTableRelations =
+		// "CREATE TABLE relations(index INT AUTO_INCREMENT PRIMARY KEY, uuid CARCHAR(36) NOT NULL);";
 
-		statement.execute(strcreateTableMengen);
+		// statement.execute(strcreateTableMengen);
 		statement.execute(strcreateTableElements);
-		statement.execute(strcreateTableRelations);
+		// statement.execute(strcreateTableRelations);
 
 		statement.close();
 	}
+
 	/**
 	 * Löscht alle Tabellen und die entsprechenden Eintr�ge
 	 * 
@@ -76,54 +87,89 @@ public class Database {
 		statement.execute("DROP TABLE IF EXISTS relations;");
 
 	}
-	
-//	public int writeMenge(Menge me) throws SQLException {
 
-//		Statement stmt = conn.createStatement();
-//		String query = "SELECT * FROM menge WHERE index="
-//				+ Integer.toString(me.getIdMenge());
-//		ResultSet rs = stmt.executeQuery(query);
-//
-//		if (!rs.next()) {
-//
-//			String strWriteMenge = "INSERT INTO menge(index INT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, elemente, sense) VALUES(?,?,?,?);";
-//
-//			PreparedStatement prepStatement = conn
-//					.prepareStatement(strWriteMenge);
-//
-//			// ? füllen
-//			//prepStatement.setInt(1, me.getIndex());
-//			prepStatement.setString(2, me.getIdMenge().toString());
-//			//prepStatement.s(3, me.getElemente());
-//			//prepStatement.setDouble(4, bp.getP0().getY());
-//
-//
-//			prepStatement.executeUpdate();
-//			return 0; // erstmalig hinzugefügt
-//
-//		} else {
-//
-//			String strUpdateMenge;
-//			PreparedStatement prepStatement;
-//			// keine neue Pavillon-UUID, wenn Bauteil verändert wird
-//			if (!me.getPavillonId().toString().equals(strAnfangsUUID)) {
-//				strUpdateBodenplatte = "UPDATE bodenplatte SET pavillonUUID= ? WHERE index= ?";
-//				prepStatement = conn.prepareStatement(strUpdateBodenplatte);
-//				prepStatement.setString(1, bp.getPavillonId().toString());
-//				prepStatement.setInt(2, bp.getIndex());
-//				prepStatement.executeUpdate();
-//			}
-//
-//			strUpdateBodenplatte = "UPDATE bodenplatte SET x= ? WHERE index= ?";
-//			prepStatement = conn.prepareStatement(strUpdateBodenplatte);
-//			prepStatement.setDouble(1, bp.getP0().getX());
-//			prepStatement.setInt(2, bp.getIndex());
-//			prepStatement.executeUpdate();
-//
-//			return 1; // geupdated
-//
-//		}
-//	}
-	
+	public void removeMenge(Menge menge) throws SQLException {
+		Statement statement = conn.createStatement();
+		String strRemoveMenge = "DELETE FROM wand WHERE uuid='"
+				+ menge.getIdMenge().toString() + "';";
+
+		statement.execute(strRemoveMenge);
+	}
+
+	public void removeElement(Element element) throws SQLException {
+		Statement statement = conn.createStatement();
+		String strRemoveElement = "DELETE FROM element WHERE uuid='"
+				+ element.getId().toString() + "';";
+
+		statement.execute(strRemoveElement);
+	}
+
+	public void writeElemente(Map<UUID, Element> elemente) throws SQLException {
+
+		String strWriteElement = "INSERT INTO elements(uuid,uuidMenge,bedeutung) VALUES(?,?,?);";
+
+		PreparedStatement prepStatement = conn
+				.prepareStatement(strWriteElement);
+
+		for (UUID id : elemente.keySet()) {
+			Element e = elemente.get(id);
+			prepStatement.setString(1, e.getId().toString());
+			prepStatement.setString(2, UUID.randomUUID().toString()); //zum testen, hier muss man noch an die UUID der zugeh�rigen Menge kommen
+			prepStatement.setString(3, e.getSense().toString());
+			prepStatement.executeUpdate();
+
+		}
+
+	}
+
+	public Map<UUID, Element> readElemente() throws SQLException {
+
+		Map<UUID, Element> elemente = new HashMap<>();
+
+		Statement stmt = conn.createStatement();
+		String query = "SELECT uuid,uuidMenge, bedeutung FROM elements";
+
+		ResultSet rs = stmt.executeQuery(query); // Hole den MengenIterator mit
+													// den Ergebnissen
+		while (rs.next()) {
+			String strUUID = rs.getString("uuid");
+			String strUUIDm = rs.getString("uuidMenge");
+			String bedeutung = rs.getString("bedeutung");
+
+			UUID uuid = UUID.fromString(strUUID); // Wandle den String der UUID
+			UUID uuidMenge = UUID.fromString(strUUIDm); // wieder in ein echtes
+														// UUID
+			// Java-Objekt um
+
+			Sense sen = new Sense(bedeutung);
+			Element ele = new Element(uuid, sen);
+			elemente.put(uuid, ele);
+		}
+
+		return elemente;
+	}
+
+	/**
+	 * Schreibt alle Änderungen seit dem letzen Commit in die Datenbank
+	 * 
+	 * @throws SQLException
+	 */
+	public void writeChanges() throws SQLException {
+		conn.commit();
+	}
+
+	/**
+	 * Verwirft alle Änderungen seit dem letzen Commit
+	 * 
+	 * @throws SQLException
+	 */
+	public void discardChanges() throws SQLException {
+		conn.rollback();
+	}
+
+	public void setTransactionOn(boolean b) {
+		// TODO Auto-generated method stub
+
+	}
 
 }
