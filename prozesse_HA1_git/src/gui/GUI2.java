@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class GUI2 implements ActionListener, TreeSelectionListener {
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(100, 100, 500, 500);
-		frame.setLayout(null);
+		frame.setLayout(new GridLayout(3, 2));
 		
 
 		treeLeft.setModel(treeModel);
@@ -59,9 +61,11 @@ public class GUI2 implements ActionListener, TreeSelectionListener {
 		
 		textfieldLeft.setBounds(10, 320, 200, 25);
 		textfieldLeft.setEditable(false);
+		textfieldLeft.setPreferredSize(new Dimension(100, 25));
 		
 		textfieldRight.setBounds(220, 320, 200, 25);
 		textfieldRight.setEditable(false);
+		textfieldRight.setPreferredSize(new Dimension(100, 25));
 		
 		button.setBounds(10, 355, 100, 25);
 		button.addActionListener(this);
@@ -128,23 +132,27 @@ public class GUI2 implements ActionListener, TreeSelectionListener {
 				DefaultMutableTreeNode leftSel = (DefaultMutableTreeNode)leftObjects[leftObjects.length-1];
 				DefaultMutableTreeNode rightSel = (DefaultMutableTreeNode)rightObjects[rightObjects.length-1];
 				
+				Element leftElement = (Element)leftSel.getUserObject();
+				Element rightElement = (Element)rightSel.getUserObject();
 				
-				if (	leftSel.getUserObject() instanceof Element
-					 && rightSel.getUserObject() instanceof Element) {
+				if (	leftElement instanceof Element
+					 && rightElement instanceof Element) {
 					
 					
-					Element leftElement = (Element)leftSel.getUserObject();
-					Element rightElement = (Element)rightSel.getUserObject();
+					
 					
 					Relation relation = new Relation(new Sense("test"), leftElement, rightElement);
 					
 					DefaultMutableTreeNode nodeRelation0 = new DefaultMutableTreeNode(relation);
 					DefaultMutableTreeNode nodeRelation1 = new DefaultMutableTreeNode(relation);
 					
-					treeModel.insertNodeInto(nodeRelation0, leftSel, 0);
-					treeModel.insertNodeInto(nodeRelation1, rightSel, 0);
+					if (leftElement.equals(rightElement)) {
+						treeModel.insertNodeInto(nodeRelation0, leftSel, 0);
+					} else {
+						treeModel.insertNodeInto(nodeRelation0, leftSel, 0);
+						treeModel.insertNodeInto(nodeRelation1, rightSel, 0);
+					}
 					
-					//treeModel.reload();
 					treeModel.nodeChanged(leftSel);
 					treeModel.nodeChanged(rightSel);
 					
