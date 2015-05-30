@@ -29,13 +29,13 @@ public class Element {
 		this.relations = relations;
 	}
 	
-	public void addRelation(Relation relation) {
-		this.relations.add(relation);
-	}
-	
-	public void addRelation(Sense sense, Element element) {
-		this.relations.add(new Relation(sense, this, element));
-	}
+//	public void addRelation(Relation relation) {
+//		this.relations.add(relation);
+//	}
+//	
+//	public void addRelation(Sense sense, Element element) {
+//		this.relations.add(new Relation(sense, this, element));
+//	}
 
 	public UUID getId() {
 		return id;

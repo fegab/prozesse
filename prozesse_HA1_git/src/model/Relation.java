@@ -12,7 +12,9 @@ public class Relation {
 		this.sense = sense;
 		this.startElement = startElement;
 		this.endElement = endElement;
-
+		
+		startElement.getRelations().add(this);
+		endElement.getRelations().add(this);
 	}
 
 	public Sense getSense() {

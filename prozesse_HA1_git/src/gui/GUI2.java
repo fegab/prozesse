@@ -72,11 +72,8 @@ public class GUI2 implements ActionListener {
 		Element fruit0 = new Element(new Sense("Birne"));
 		Element fruit1 = new Element(new Sense("Apfel"));
 		
-		//Relation rel0 = new Relation(new Sense("rel0"), tool0, tool1);
-		//Relation rel1 = new Relation(new Sense("rel1"), tool2, fruit0);
-		
-		tool0.addRelation(new Sense("rel0"), tool1);
-		fruit1.addRelation(new Sense("rel1"), tool2);
+		new Relation(new Sense("rel0"), tool0, tool1);
+		new Relation(new Sense("rel1"), tool2, fruit0);
 		
 		Menge tools = new Menge(new Sense("Werkzeuge"));
 		tools.addElement(tool0);
