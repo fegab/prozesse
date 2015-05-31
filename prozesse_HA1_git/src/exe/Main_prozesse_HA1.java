@@ -60,8 +60,8 @@ public class Main_prozesse_HA1 {
 				Element e = mengen.get(i).getElemente().get(id);
 				helfer += 1;
 
-				System.out.println("Element " + helfer + ": " + e.getId() + " -->"
-						+ e.getSense().getName());
+				System.out.println("Element " + helfer + ": " + e.getId()
+						+ " -->" + e.getSense().getName());
 
 			}
 
@@ -69,23 +69,6 @@ public class Main_prozesse_HA1 {
 			System.out.println(" ");
 
 		}
-
-		// for (int i = 0; i < 10; i++) {
-		// testSense.setName("testSense" + i);
-		// Element newele = new Element(UUID.randomUUID(), testSense);
-		// elemente.put(newele.getId(), newele);
-		// // System.out.println(testSense.getName());
-		// // System.out.println(elemente.size());
-		// // System.out.println(newele.getId());
-		// }
-
-		// for (UUID id : elemente.keySet()) {
-		// Element e = elemente.get(id);
-		// helfer += 1;
-		// System.out.println(helfer + ": " + e.getId() + " "
-		// + e.getSense().getName());
-		//
-		// }
 
 		// ab hier Datenbank-shizzl
 
@@ -106,26 +89,24 @@ public class Main_prozesse_HA1 {
 
 		// LADEN
 
-		// db.connect(fileName, "ich", "");
+		db.connect(fileName, "fegab", "");
 
-		// waende = db.readWaende();
+		elemente = db.readElemente();
 
-		// Es müssen 10 Wände gelesen werden, da die 11. letztendlich doch
-		// nicht eingefügt wurde.
-		// for (Wand wand : waende) {
-		// System.out.println("Wand (" + wand.getID().toString() + ", " +
-		// wand.getOeffnung().size() + ")");
-		// }
+		for (UUID id : elemente.keySet()) {
+			Element e = elemente.get(id);
+			helfer += 1;
+			System.out.println("hallo!");
+			System.out.println(helfer + ": " + e.getId() + " "
+					+ e.getSense().getName());
 
-		// db.close();
+		}
+
+		db.close();
 
 		// System.out.println("Anzahl der Elemente:(mit helfer) " + helfer);
-		// System.out
-		// .println("Anzahl der Elemente:(mit .size) " + elemente.size());
-
-		// neuer test
-		// System.out.println("Mengen-ID: " + a.getIdMenge());
-		// System.out.println("Anzahl der Elemente: " + a.getElemente().size());
+		// System.out.println("Anzahl der Elemente:(mit .size) " +
+		// elemente.size());
 
 	}
 

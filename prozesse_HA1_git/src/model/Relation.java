@@ -1,8 +1,11 @@
 package model;
 
+import java.util.UUID;
+
 
 public class Relation {
 
+	private UUID idRelation;
 	public Element startElement;
 	public Element endElement;
 
@@ -23,6 +26,15 @@ public class Relation {
 
 	public void setSense(Sense sense) {
 		this.sense = sense;
+	}
+
+	
+	public UUID getIdRelation() {
+		return idRelation;
+	}
+
+	public void setIdRelation(UUID idRelation) {
+		this.idRelation = idRelation;
 	}
 
 	public Element getStartElement() {

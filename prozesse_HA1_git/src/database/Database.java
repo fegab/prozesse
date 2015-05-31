@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import model.Element;
 import model.Menge;
+import model.Relation;
 import model.Sense;
 
 public class Database {
@@ -56,19 +57,17 @@ public class Database {
 	 */
 	public void createTables() throws SQLException {
 		Statement statement = conn.createStatement();
-		System.out.println("Tabellen angelegt");
+		System.out.println("createTables()");
 
 		// UUID wird als String (UUIDs haben immer 36 Zeichen) gespeichert
 
-		// String strcreateTableMengen
-		// ="CREATE TABLE mengen(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, sense);";
+		String strcreateTableMengen="CREATE TABLE mengen(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, sense VARCHAR(36) NOT NULL);";
 		String strcreateTableElements = "CREATE TABLE elements(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, uuidMenge VARCHAR(36) NOT NULL,bedeutung VARCHAR(36) NOT NULL);";
-		// String strcreateTableRelations
-		// ="CREATE TABLE relations(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL);";
+		String strcreateTableRelations="CREATE TABLE relations(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL);";
 
-		// statement.execute(strcreateTableMengen);
+		statement.execute(strcreateTableMengen);
 		statement.execute(strcreateTableElements);
-		// statement.execute(strcreateTableRelations);
+		statement.execute(strcreateTableRelations);
 
 		statement.close();
 	}
@@ -80,7 +79,7 @@ public class Database {
 	 */
 	public void clearTables() throws SQLException {
 		Statement statement = conn.createStatement();
-		System.out.println("Tabellen gelöscht");
+		System.out.println("clearTables()");
 		statement.execute("DROP TABLE IF EXISTS mengen;");
 		statement.execute("DROP TABLE IF EXISTS elements;");
 		statement.execute("DROP TABLE IF EXISTS relations;");
@@ -89,6 +88,7 @@ public class Database {
 
 	public void removeMenge(Menge menge) throws SQLException {
 		Statement statement = conn.createStatement();
+		System.out.println("removeMenge()");
 		String strRemoveMenge = "DELETE FROM wand WHERE uuid='"
 				+ menge.getIdMenge().toString() + "';";
 
@@ -97,8 +97,18 @@ public class Database {
 
 	public void removeElement(Element element) throws SQLException {
 		Statement statement = conn.createStatement();
+		System.out.println("clearElement()");
 		String strRemoveElement = "DELETE FROM element WHERE uuid='"
 				+ element.getId().toString() + "';";
+
+		statement.execute(strRemoveElement);
+	}
+	
+	public void removeRelation(Relation relation) throws SQLException {
+		Statement statement = conn.createStatement();
+		System.out.println("clearElement()");
+		String strRemoveElement = "DELETE FROM relation WHERE uuid='"
+				+ relation.getIdRelation().toString() + "';";
 
 		statement.execute(strRemoveElement);
 	}
@@ -106,13 +116,13 @@ public class Database {
 	public void writeElemente(Map<UUID, Element> elemente) throws SQLException {
 
 		String strWriteElement = "INSERT INTO elements(uuid,uuidMenge,bedeutung) VALUES(?,?,?);";
-		System.out.println("Elemente in DB geschrieben");
+		System.out.println("writeElemente()");
 
 		PreparedStatement prepStatement = conn
 				.prepareStatement(strWriteElement);
 
 		for (UUID id : elemente.keySet()) {
-			 System.out.println("was passiert");
+			// System.out.println("was passiert");
 			Element e = elemente.get(id);
 			prepStatement.setString(1, e.getId().toString());
 			prepStatement.setString(2, UUID.randomUUID().toString());
@@ -130,6 +140,7 @@ public class Database {
 
 		Statement stmt = conn.createStatement();
 		String query = "SELECT uuid,uuidMenge, bedeutung FROM elements";
+		System.out.println("readElemente()");
 
 		ResultSet rs = stmt.executeQuery(query); // Hole den MengenIterator mit
 													// den Ergebnissen
