@@ -56,17 +56,15 @@ public class Database {
 	 */
 	public void createTables() throws SQLException {
 		Statement statement = conn.createStatement();
+		System.out.println("Tabellen angelegt");
 
 		// UUID wird als String (UUIDs haben immer 36 Zeichen) gespeichert
 
-		// Menge: UUID idMenge, Sense sense
-		// Elemente: UUID id, UUID idMenge, Sense sense
-		// Relationen: Sense sense, Element startElement, Element endElement
-		// String strcreateTableMengen =
-		// "CREATE TABLE mengen(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, sense);";
+		// String strcreateTableMengen
+		// ="CREATE TABLE mengen(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, sense);";
 		String strcreateTableElements = "CREATE TABLE elements(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, uuidMenge VARCHAR(36) NOT NULL,bedeutung VARCHAR(36) NOT NULL);";
-		// String strcreateTableRelations =
-		// "CREATE TABLE relations(index INT AUTO_INCREMENT PRIMARY KEY, uuid CARCHAR(36) NOT NULL);";
+		// String strcreateTableRelations
+		// ="CREATE TABLE relations(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL);";
 
 		// statement.execute(strcreateTableMengen);
 		statement.execute(strcreateTableElements);
@@ -82,6 +80,7 @@ public class Database {
 	 */
 	public void clearTables() throws SQLException {
 		Statement statement = conn.createStatement();
+		System.out.println("Tabellen gelöscht");
 		statement.execute("DROP TABLE IF EXISTS mengen;");
 		statement.execute("DROP TABLE IF EXISTS elements;");
 		statement.execute("DROP TABLE IF EXISTS relations;");
@@ -107,14 +106,17 @@ public class Database {
 	public void writeElemente(Map<UUID, Element> elemente) throws SQLException {
 
 		String strWriteElement = "INSERT INTO elements(uuid,uuidMenge,bedeutung) VALUES(?,?,?);";
+		System.out.println("Elemente in DB geschrieben");
 
 		PreparedStatement prepStatement = conn
 				.prepareStatement(strWriteElement);
 
 		for (UUID id : elemente.keySet()) {
+			 System.out.println("was passiert");
 			Element e = elemente.get(id);
 			prepStatement.setString(1, e.getId().toString());
-			prepStatement.setString(2, UUID.randomUUID().toString()); //zum testen, hier muss man noch an die UUID der zugehörigen Menge kommen
+			prepStatement.setString(2, UUID.randomUUID().toString());
+			// prepStatement.setString(2, elemente.);
 			prepStatement.setString(3, e.getSense().toString());
 			prepStatement.executeUpdate();
 
