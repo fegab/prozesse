@@ -51,18 +51,18 @@ public class GUI2 implements ActionListener, TreeSelectionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(100, 100, 500, 500);
 		frame.setLayout(new GridLayout(3, 2));
-		
-//		JToolBar toolBar = new JToolBar();
-//		//frame.add(toolBar, BorderLayout.NORTH);
-//
-//		JButton btnNeuemenge = new JButton("neueMenge");
-//		toolBar.add(btnNeuemenge);
-//
-//		JButton btnNeuerelation = new JButton("neueRelation");
-//		toolBar.add(btnNeuerelation);
-//
-//		JButton btnNeueselement = new JButton("neuesElement");
-//		toolBar.add(btnNeueselement);
+
+		// JToolBar toolBar = new JToolBar();
+		// //frame.add(toolBar, BorderLayout.NORTH);
+		//
+		// JButton btnNeuemenge = new JButton("neueMenge");
+		// toolBar.add(btnNeuemenge);
+		//
+		// JButton btnNeuerelation = new JButton("neueRelation");
+		// toolBar.add(btnNeuerelation);
+		//
+		// JButton btnNeueselement = new JButton("neuesElement");
+		// toolBar.add(btnNeueselement);
 
 		treeLeft.setModel(treeModel);
 		treeLeft.setBounds(10, 10, 200, 300);
@@ -125,13 +125,11 @@ public class GUI2 implements ActionListener, TreeSelectionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource().equals(btnGenerateMenge)) {
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setBounds(100, 100, 500, 500);
-			frame.setLayout(new GridLayout(2, 2));
-			frame.setVisible(true);
-			//new GUI2(mengen);
-			
-			
+			// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			// frame.setBounds(100, 100, 500, 500);
+			// frame.setLayout(new GridLayout(2, 2));
+			// frame.setVisible(true);
+			// new GUI2(mengen);
 
 		}
 
