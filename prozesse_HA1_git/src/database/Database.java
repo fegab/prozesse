@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -61,9 +62,9 @@ public class Database {
 
 		// UUID wird als String (UUIDs haben immer 36 Zeichen) gespeichert
 
-		String strcreateTableMengen="CREATE TABLE mengen(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, sense VARCHAR(36) NOT NULL);";
+		String strcreateTableMengen = "CREATE TABLE mengen(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, name VARCHAR(36) NOT NULL);";
 		String strcreateTableElements = "CREATE TABLE elements(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL, uuidMenge VARCHAR(36) NOT NULL,bedeutung VARCHAR(36) NOT NULL);";
-		String strcreateTableRelations="CREATE TABLE relations(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL);";
+		String strcreateTableRelations = "CREATE TABLE relations(index INT AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(36) NOT NULL);";
 
 		statement.execute(strcreateTableMengen);
 		statement.execute(strcreateTableElements);
@@ -103,7 +104,7 @@ public class Database {
 
 		statement.execute(strRemoveElement);
 	}
-	
+
 	public void removeRelation(Relation relation) throws SQLException {
 		Statement statement = conn.createStatement();
 		System.out.println("clearElement()");
@@ -111,6 +112,33 @@ public class Database {
 				+ relation.getIdRelation().toString() + "';";
 
 		statement.execute(strRemoveElement);
+	}
+
+	public void writeMenge(ArrayList<Menge> mengen) throws SQLException {
+
+		String strWriteMenge = "INSERT INTO mengen(uuid,name) VALUES(?,?);";
+		System.out.println("writeMenge()");
+
+		PreparedStatement prepStatement = conn.prepareStatement(strWriteMenge);
+
+		for (int i = 0; i < mengen.size(); i++) {
+
+			prepStatement.setString(1, mengen.get(i).getIdMenge().toString());
+			System.out.println("in Spalte 1 geschrieben: " + mengen.get(i).getIdMenge().toString());
+			prepStatement.setString(2, mengen.get(i).getSense().getName());
+			System.out.println("in Spalte 2 geschrieben: " + mengen.get(i).getSense().getName());
+
+		}
+		// for (UUID id : elemente.keySet()) {
+		// // System.out.println("was passiert");
+		// Element e = elemente.get(id);
+		// prepStatement.setString(1, e.getId().toString());
+		// prepStatement.setString(2, UUID.randomUUID().toString());
+		// // prepStatement.setString(2, elemente.);
+		// prepStatement.setString(3, e.getSense().toString());
+		// prepStatement.executeUpdate();
+		// }
+
 	}
 
 	public void writeElemente(Map<UUID, Element> elemente) throws SQLException {
@@ -126,7 +154,6 @@ public class Database {
 			Element e = elemente.get(id);
 			prepStatement.setString(1, e.getId().toString());
 			prepStatement.setString(2, UUID.randomUUID().toString());
-			// prepStatement.setString(2, elemente.);
 			prepStatement.setString(3, e.getSense().toString());
 			prepStatement.executeUpdate();
 
