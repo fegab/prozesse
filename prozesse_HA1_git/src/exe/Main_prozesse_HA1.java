@@ -49,7 +49,7 @@ public class Main_prozesse_HA1 {
 		// Datenbank tatsächlich aus (Commit)
 
 		db.writeElemente(elemente);
-		// db.writeChanges();// Führe Commit aus
+		db.writeChanges();// Führe Commit aus
 		db.close();
 
 		// // LADEN

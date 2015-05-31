@@ -138,8 +138,7 @@ public class Database {
 
 			UUID uuid = UUID.fromString(strUUID); // Wandle den String der UUID
 			UUID uuidMenge = UUID.fromString(strUUIDm); // wieder in ein echtes
-														// UUID
-			// Java-Objekt um
+														// UUID Java-Objekt um
 
 			Sense sen = new Sense(bedeutung);
 			Element ele = new Element(uuid, sen);
