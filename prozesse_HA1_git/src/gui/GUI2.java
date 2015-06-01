@@ -57,12 +57,12 @@ public class GUI2 implements ActionListener, TreeSelectionListener {
 	
 	private JScrollPane paneLeft = new JScrollPane(treeLeft, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	private JScrollPane paneRight = new JScrollPane(treeRight, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
+	
 	private JTextField textfieldLeft = new JTextField();
 	private JTextField textfieldRight = new JTextField();
 
-	private JButton btnRelation = new JButton("Erstelle Menge");
-	private JButton btnGenerateMenge = new JButton("neue Menge");
+	private JButton buttonCreate = new JButton("Erstelle Menge");
+	private JButton buttonRemove = new JButton("Lösche Menge");
 
 	
 
@@ -129,12 +129,17 @@ public class GUI2 implements ActionListener, TreeSelectionListener {
 		c.gridy = 1;
 		frame.add(textfieldRight, c);
 
-		btnRelation.setBounds(10, 355, 100, 25);
-		btnRelation.addActionListener(this);
-		c.gridwidth = 2;
+		buttonCreate.setBounds(10, 355, 100, 25);
+		buttonCreate.addActionListener(this);
 		c.gridx = 0;
 		c.gridy = 2;
-		frame.add(btnRelation, c);
+		frame.add(buttonCreate, c);
+		
+		buttonRemove.setBounds(200, 355, 100, 25);
+		buttonRemove.addActionListener(this);
+		c.gridx = 1;
+		c.gridy = 2;
+		frame.add(buttonRemove, c);
 
 
 		frame.setVisible(true);
@@ -171,24 +176,7 @@ public class GUI2 implements ActionListener, TreeSelectionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource().equals(btnGenerateMenge)) {
-			// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			// frame.setBounds(100, 100, 500, 500);
-			// frame.setLayout(new GridLayout(2, 2));
-			// frame.setVisible(true);
-			// new GUI2(mengen);
-
-		}
-
-		if (e.getSource().equals(btnRelation)) {
-			TreeSelectionModel leftSelection = treeLeft.getSelectionModel();
-			TreeSelectionModel rightSelection = treeRight.getSelectionModel();
-
-			TreePath leftPath = leftSelection.getSelectionPath();
-			TreePath rightPath = rightSelection.getSelectionPath();
-			
-			
-			
+		if (e.getSource().equals(buttonCreate)) {
 			
 			switch (selectedType) {
 			case ROOT:
@@ -223,44 +211,38 @@ public class GUI2 implements ActionListener, TreeSelectionListener {
 				break;
 			}
 			
-
-//			if (leftPath != null && rightPath != null) {
-//
-//				Object[] leftObjects = leftPath.getPath();
-//				Object[] rightObjects = rightPath.getPath();
-//
-//				DefaultMutableTreeNode leftSel = (DefaultMutableTreeNode) leftObjects[leftObjects.length - 1];
-//				DefaultMutableTreeNode rightSel = (DefaultMutableTreeNode) rightObjects[rightObjects.length - 1];
-//
+		} else if (e.getSource().equals(buttonRemove)) {
+			
+			if (selectedType != SelectedType.ROOT) {
+				removeNode(selectedNodeLeft); 
+			}
+			
+//			switch (selectedType) {
+//			case ROOT:
 //				
-//
-//				if (leftSel.getUserObject() instanceof Element
-//					&& rightSel.getUserObject() instanceof Element) {
-//					
-//					Element leftElement = (Element)leftSel.getUserObject();
-//					Element rightElement = (Element)rightSel.getUserObject();
-//
-//					Relation relation = new Relation(new Sense("test"), leftElement, rightElement);
-//
-//					DefaultMutableTreeNode nodeRelation0 = new DefaultMutableTreeNode(relation);
-//					DefaultMutableTreeNode nodeRelation1 = new DefaultMutableTreeNode(relation);
-//
-//					if (leftElement.equals(rightElement)) {
-//						treeModel.insertNodeInto(nodeRelation0, leftSel, 0);
-//					} else {
-//						treeModel.insertNodeInto(nodeRelation0, leftSel, 0);
-//						treeModel.insertNodeInto(nodeRelation1, rightSel, 0);
-//					}
-//
-//					treeModel.nodeChanged(leftSel);
-//					treeModel.nodeChanged(rightSel);
-//
-//					System.out.println("relation added: " + relation.toString());
-//				}
-//
+//				break;
+//			case MENGE:
+//				removeNode(selectedNodeLeft); 
+//				break;
+//			case ELEMENT:
+//				
+//				break;
+//			case RELATION:
+//				
+//				break;
+//			default:
+//				break;
 //			}
+			
 		}
 
+	}
+	
+	private void removeNode(MutableTreeNode node) {
+		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)node.getParent();
+		treeModel.removeNodeFromParent(node);
+		treeModel.nodeChanged(parent);
+		treeLeft.setSelectionPath(new TreePath(root));
 	}
 	
 	private void addNode(Object newObj, MutableTreeNode parent) {
@@ -304,19 +286,23 @@ public class GUI2 implements ActionListener, TreeSelectionListener {
 			if (leftSel instanceof Menge) {
 				// menge selected
 				selectedType = SelectedType.MENGE;
-				btnRelation.setText("Erstelle Element");
+				buttonCreate.setText("Erstelle Element");
+				buttonRemove.setText("Lösche Menge");
 			} else if (leftSel instanceof Element) {
 				// element selected
 				selectedType = SelectedType.ELEMENT;
-				btnRelation.setText("Erstelle Relation");
+				buttonCreate.setText("Erstelle Relation");
+				buttonRemove.setText("Lösche Element");
 			} else if (leftSel instanceof Relation) {
 				// relation selected
 				selectedType = SelectedType.RELATION;
-				btnRelation.setText("?");
+				buttonCreate.setText("?");
+				buttonRemove.setText("Lösche Relation");
 			} else {
 				// root selected
 				selectedType = SelectedType.ROOT;
-				btnRelation.setText("Erstelle Menge");
+				buttonCreate.setText("Erstelle Menge");
+				buttonRemove.setText("?");
 			}
 			
 			selectedNodeLeft = (DefaultMutableTreeNode)selection;
